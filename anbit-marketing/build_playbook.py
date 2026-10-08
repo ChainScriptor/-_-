@@ -185,10 +185,10 @@ def type_tag(kind):
     return Paragraph(kind, S["tag"])
 
 
-def ideas_table(start_no, ideas):
+def ideas_table(start_no, ideas, col4="Για ποιους"):
     widths = [10 * mm, CONTENT_W - 10 * mm - 15 * mm - 22 * mm - 21 * mm, 15 * mm, 22 * mm, 21 * mm]
     rows = [[Paragraph("#", S["th"]), Paragraph("Ιδέα", S["th"]), Paragraph("Κόστος", S["th"]),
-             Paragraph("Για ποιους", S["th"]), Paragraph("Τύπος", S["th"])]]
+             Paragraph(col4, S["th"]), Paragraph("Τύπος", S["th"])]]
     st = [
         ("BACKGROUND", (0, 0), (-1, 0), INK),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
