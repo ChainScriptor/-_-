@@ -178,6 +178,9 @@ def case_card(i, case):
     return KeepTogether([head, body, Spacer(1, 9)])
 
 
+TYPE_BG = {"Επιθετικό": INK, "Τερματισμένο": YEL}
+
+
 def type_tag(kind):
     if kind == "Επιθετικό":
         return Paragraph(kind, style("ta", fontName="Sans-Bold", fontSize=7.8, leading=10,
@@ -186,7 +189,7 @@ def type_tag(kind):
 
 
 def ideas_table(start_no, ideas, col4="Για ποιους"):
-    widths = [10 * mm, CONTENT_W - 10 * mm - 15 * mm - 22 * mm - 21 * mm, 15 * mm, 22 * mm, 21 * mm]
+    widths = [10 * mm, CONTENT_W - 10 * mm - 15 * mm - 22 * mm - 23 * mm, 15 * mm, 22 * mm, 23 * mm]
     rows = [[Paragraph("#", S["th"]), Paragraph("Ιδέα", S["th"]), Paragraph("Κόστος", S["th"]),
              Paragraph(col4, S["th"]), Paragraph("Τύπος", S["th"])]]
     st = [
@@ -195,6 +198,7 @@ def ideas_table(start_no, ideas, col4="Για ποιους"):
         ("VALIGN", (0, 0), (-1, 0), "MIDDLE"),
         ("LEFTPADDING", (0, 0), (-1, -1), 5), ("RIGHTPADDING", (0, 0), (-1, -1), 5),
         ("LEFTPADDING", (0, 0), (0, -1), 1), ("RIGHTPADDING", (0, 0), (0, -1), 1),
+        ("LEFTPADDING", (4, 0), (4, -1), 2), ("RIGHTPADDING", (4, 0), (4, -1), 2),
         ("TOPPADDING", (0, 0), (-1, -1), 5), ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
         ("LINEBELOW", (0, 1), (-1, -1), 0.5, LINE),
         ("BOX", (0, 0), (-1, -1), 0.6, INK),
@@ -209,10 +213,7 @@ def ideas_table(start_no, ideas, col4="Για ποιους"):
             Paragraph(who, style("w", fontSize=8.3, leading=11)),
             type_tag(kind),
         ])
-        if kind == "Επιθετικό":
-            st.append(("BACKGROUND", (4, r), (4, r), INK))
-        else:
-            st.append(("BACKGROUND", (4, r), (4, r), LAV))
+        st.append(("BACKGROUND", (4, r), (4, r), TYPE_BG.get(kind, LAV)))
         st.append(("BACKGROUND", (0, r), (0, r), YEL))
         if r % 2 == 0:
             st.append(("BACKGROUND", (1, r), (3, r), LAV_SOFT))
