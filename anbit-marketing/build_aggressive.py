@@ -17,60 +17,74 @@ OUT = Path(__file__).parent / "anbit_100_aggressive_ideas.pdf"
 HEADER = "Anbit · 100 έξυπνες & επιθετικές ιδέες"
 
 
-def draw_cover(c, doc):
-    c.saveState()
-    c.setFillColor(LAV)
-    c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
-    c.setFillColor(INK)
-    c.setFont("Sans-Bold", 22)
-    c.drawString(MARGIN, PAGE_H - 30 * mm, "Anbit")
+def cover_drawer(pill_text, title_lines, sub_lines, quote_white, quote_yellow):
+    """Lavender cover with a yellow pill, big title, subtitle and a black quote card."""
+    def draw(c, doc):
+        c.saveState()
+        c.setFillColor(LAV)
+        c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
+        c.setFillColor(INK)
+        c.setFont("Sans-Bold", 22)
+        c.drawString(MARGIN, PAGE_H - 30 * mm, "Anbit")
 
-    pill_text = "ΕΚΔΟΣΗ ΙΔΡΥΤΗ · TIKTOK FIRST"
-    c.setFont("Sans-Bold", 9)
-    w = c.stringWidth(pill_text, "Sans-Bold", 9) + 14
-    c.setFillColor(YEL)
-    c.roundRect(MARGIN, PAGE_H - 62 * mm, w, 7.5 * mm, 3.7 * mm, stroke=0, fill=1)
-    c.setFillColor(INK)
-    c.drawString(MARGIN + 7, PAGE_H - 62 * mm + 2.6 * mm, pill_text)
+        c.setFont("Sans-Bold", 9)
+        w = c.stringWidth(pill_text, "Sans-Bold", 9) + 14
+        c.setFillColor(YEL)
+        c.roundRect(MARGIN, PAGE_H - 62 * mm, w, 7.5 * mm, 3.7 * mm, stroke=0, fill=1)
+        c.setFillColor(INK)
+        c.drawString(MARGIN + 7, PAGE_H - 62 * mm + 2.6 * mm, pill_text)
 
-    c.setFont("Sans-Bold", 44)
-    for i, line in enumerate(["100 έξυπνες", "& επιθετικές", "ιδέες"]):
-        c.drawString(MARGIN, PAGE_H - (82 + i * 17) * mm, line)
+        c.setFont("Sans-Bold", 44)
+        for i, line in enumerate(title_lines):
+            c.drawString(MARGIN, PAGE_H - (82 + i * 17) * mm, line)
 
-    c.setFont("Sans", 13)
-    c.setFillColor(GREY)
-    for i, line in enumerate(["50 ιδέες για TikTok που κάνεις εσύ, ως ιδρυτής, μπροστά στην κάμερα,",
-                              "και 50 ακόμα για δρόμο, πωλήσεις, PR και growth.",
-                              "Όλες καινούργιες, όλες με μικρό budget."]):
-        c.drawString(MARGIN, PAGE_H - (140 + i * 7) * mm, line)
+        c.setFont("Sans", 13)
+        c.setFillColor(GREY)
+        for i, line in enumerate(sub_lines):
+            c.drawString(MARGIN, PAGE_H - (140 + i * 7) * mm, line)
 
-    box_h = 46 * mm
-    c.setFillColor(INK)
-    c.roundRect(MARGIN, 32 * mm, CONTENT_W, box_h, 6 * mm, stroke=0, fill=1)
-    c.setFillColor(colors.white)
-    c.setFont("Sans-Bold", 15)
-    c.drawString(MARGIN + 10 * mm, 32 * mm + box_h - 15 * mm, "Το TikTok δεν θέλει διαφημίσεις.")
-    c.drawString(MARGIN + 10 * mm, 32 * mm + box_h - 23 * mm, "Θέλει εσένα, τα «όχι» σου και τις νίκες σου.")
-    c.setFillColor(YEL)
-    c.drawString(MARGIN + 10 * mm, 32 * mm + box_h - 35 * mm, "Σήμερα γεμάτο. Αύριο; Θα το δουν όλοι.")
+        box_h = 46 * mm
+        c.setFillColor(INK)
+        c.roundRect(MARGIN, 32 * mm, CONTENT_W, box_h, 6 * mm, stroke=0, fill=1)
+        c.setFillColor(colors.white)
+        c.setFont("Sans-Bold", 15)
+        for i, line in enumerate(quote_white):
+            c.drawString(MARGIN + 10 * mm, 32 * mm + box_h - (15 + i * 8) * mm, line)
+        c.setFillColor(YEL)
+        c.drawString(MARGIN + 10 * mm, 32 * mm + box_h - 35 * mm, quote_yellow)
 
-    c.setFillColor(INK)
-    c.setFont("Sans", 9)
-    c.drawString(MARGIN, 18 * mm, "anbit.gr · Οκτώβριος 2026")
-    c.restoreState()
+        c.setFillColor(INK)
+        c.setFont("Sans", 9)
+        c.drawString(MARGIN, 18 * mm, "anbit.gr · Οκτώβριος 2026")
+        c.restoreState()
+    return draw
 
 
-def draw_page(c, doc):
-    c.saveState()
-    c.setFillColor(LAV)
-    c.rect(0, PAGE_H - 7 * mm, PAGE_W, 7 * mm, stroke=0, fill=1)
-    c.setFont("Sans-Bold", 8)
-    c.setFillColor(INK)
-    c.drawString(MARGIN, PAGE_H - 4.8 * mm, HEADER)
-    c.setFont("Sans", 8)
-    c.setFillColor(GREY)
-    c.drawRightString(PAGE_W - MARGIN, 10 * mm, f"{doc.page}")
-    c.restoreState()
+def page_drawer(header):
+    """Lavender header strip and page number for content pages."""
+    def draw(c, doc):
+        c.saveState()
+        c.setFillColor(LAV)
+        c.rect(0, PAGE_H - 7 * mm, PAGE_W, 7 * mm, stroke=0, fill=1)
+        c.setFont("Sans-Bold", 8)
+        c.setFillColor(INK)
+        c.drawString(MARGIN, PAGE_H - 4.8 * mm, header)
+        c.setFont("Sans", 8)
+        c.setFillColor(GREY)
+        c.drawRightString(PAGE_W - MARGIN, 10 * mm, f"{doc.page}")
+        c.restoreState()
+    return draw
+
+
+draw_cover = cover_drawer(
+    "ΕΚΔΟΣΗ ΙΔΡΥΤΗ · TIKTOK FIRST",
+    ["100 έξυπνες", "& επιθετικές", "ιδέες"],
+    ["50 ιδέες για TikTok που κάνεις εσύ, ως ιδρυτής, μπροστά στην κάμερα,",
+     "και 50 ακόμα για δρόμο, πωλήσεις, PR και growth.",
+     "Όλες καινούργιες, όλες με μικρό budget."],
+    ["Το TikTok δεν θέλει διαφημίσεις.", "Θέλει εσένα, τα «όχι» σου και τις νίκες σου."],
+    "Σήμερα γεμάτο. Αύριο; Θα το δουν όλοι.")
+draw_page = page_drawer(HEADER)
 
 
 def label_table(rows, label_w=46 * mm):
